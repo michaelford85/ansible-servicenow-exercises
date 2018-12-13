@@ -1,0 +1,6 @@
+---
+# vars file for ansible-servicenow-cmdb
+
+snow_table: cmdb_ci_netgear
+SN_USERNAME: "{{ vaulted_servicenow_username }}"
+SN_PASSWORD: "{{ vaulted_servicenow_password }}"
