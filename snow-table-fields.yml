@@ -1,0 +1,25 @@
+---
+- hosts: localhost
+  connection: local
+  gather_facts: no
+  vars_files:
+    - default_vars.yml
+    - servicenow-credentials.yml
+
+  tasks:
+
+  - name: Retrieve fields for a table {{ snow_table }}
+    snow_record:
+      state: present
+      table: "{{ snow_table }}"
+      data:
+        name: delete_this_record
+      username: "{{ SN_USERNAME }}"
+      password: "{{ SN_PASSWORD }}"
+      instance: "{{ SN_INSTANCE }}"
+    register: table_output
+
+  - debug: var=table_output.record
+
+  - debug:
+      msg: "Operator: Delete the object called delete_this_record in table {{snow_table }}"
