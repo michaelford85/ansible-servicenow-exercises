@@ -1,0 +1,41 @@
+---
+- name: RAISE AN INCIDENT
+  hosts: localhost
+  connection: local
+  gather_facts: no
+  vars_files:
+    - default_vars.yml
+    - servicenow-credentials.yml
+
+  tasks:
+    - name: CREATE AN INCIDENT
+      snow_record:
+        username: "{{ SN_USERNAME }}"
+        password: "{{ SN_PASSWORD }}"
+        instance: "{{ SN_INSTANCE }}"
+        state: present
+        table: incident
+        data:
+          short_description: "KEEPALIVE"
+          severity: 3
+          priority: 2
+          caller_id: "System Administrator"
+          comments: "The is the fake message to keepalive this SNOW incident"
+      register: snow_var
+
+    - name: VISUAL OUTPUT OF INCIDENT NUMBER
+      debug:
+        var: snow_var.record.number
+
+    # Pause for 5 seconds to build app cache.
+    - pause:
+        seconds: 5
+
+    - name: DELETE THE INCIDENT
+      snow_record:
+        username: "{{ SN_USERNAME }}"
+        password: "{{ SN_PASSWORD }}"
+        instance: "{{ SN_INSTANCE }}"
+        state: absent
+        table: incident
+        number: "{{snow_var['record']['number']}}"
