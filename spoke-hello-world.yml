@@ -17,7 +17,8 @@
           password: "{{ SN_PASSWORD }}"
         type: standard
         other:
-          approval: "requested"
+          # approval: "requested"
+          cab_required: true
         state: assess
         assignment_group: "CAB Approval"
         short_description: Hello World Change Request
