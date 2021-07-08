@@ -20,13 +20,6 @@
         description: Hello World Change Request
       register: new_change_request
 
-    - name: Store Change Request number as artifact for later in the workflow
-      template:
-        src: ./templates/snow-change-request.j2
-        dest: "{{ working_dir }}/snow-change-request.yml"
-      run_once: yes
-      delegate_to: localhost
-
     - name: Print out Change Request number
       ansible.builtin.debug:
         msg: "The newly created change request is {{ new_change_request.record.number }}. Awaiting approval from Change Advisory Board."
