@@ -16,7 +16,8 @@
           username: "{{ SN_USERNAME }}"
           password: "{{ SN_PASSWORD }}"
         type: standard
-        category: other
+        other:
+          approval: "requested"
         state: assess
         assignment_group: "CAB Approval"
         short_description: Hello World Change Request
