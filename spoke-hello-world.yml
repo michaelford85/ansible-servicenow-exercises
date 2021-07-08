@@ -63,8 +63,8 @@
     - name: Do the actual Ansible Task
       ansible.builtin.debug:
         msg:
-          - "HELLO WORLD!"
-          
+          - "{{ hello_world_msg }}"
+
     - name: Move the Change request state to Review
       servicenow.itsm.change_request:
         instance:
@@ -72,7 +72,6 @@
           username: "{{ SN_USERNAME }}"
           password: "{{ SN_PASSWORD }}"
         state: "{{ item }}"
-        state: closed
         sys_id: "{{ new_change_request.record.sys_id }}"
       loop:
         - "implement"
