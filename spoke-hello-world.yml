@@ -17,6 +17,7 @@
           password: "{{ SN_PASSWORD }}"
         type: standard
         state: new
+        assignment_group: "CAB Approval"
         short_description: Hello World Change Request
         description: Hello World Change Request
       register: new_change_request
@@ -53,7 +54,7 @@
 
     - name: Print out Change Request number
       ansible.builtin.debug:
-        msg: "The current state of the change request is {{ change_request_status.record[0].state }}."
+        msg: "The current state of the change request is {{ change_request_status.records[0].state }}."
 
     - name: Close the ServiceNow Change Request
       servicenow.itsm.change_request:
