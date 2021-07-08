@@ -11,9 +11,9 @@
     - name: Create ServiceNow Change Request
       servicenow.itsm.change_request:
         instance:
-          host: "https://{{ SNOW_INSTANCE }}.service-now.com"
-          username: "{{ SNOW_USERNAME }}"
-          password: "{{ SNOW_PASSWORD }}"
+          host: "https://{{ SN_INSTANCE }}.service-now.com"
+          username: "{{ SN_USERNAME }}"
+          password: "{{ SN_PASSWORD }}"
         type: standard
         state: new
         short_description: Hello World Change Request
