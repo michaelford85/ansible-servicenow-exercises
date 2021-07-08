@@ -16,6 +16,7 @@
           username: "{{ SN_USERNAME }}"
           password: "{{ SN_PASSWORD }}"
         type: standard
+        category: other
         state: assess
         assignment_group: "CAB Approval"
         short_description: Hello World Change Request
@@ -47,24 +48,24 @@
           password: "{{ SN_PASSWORD }}"
         sys_id: "{{ new_change_request.record.sys_id }}"
       register: change_request_status
-      until: change_request_status.records[0].state == "scheduled"
-      retries: 6
-      delay: 10
+      # until: change_request_status.records[0].state == "scheduled"
+      # retries: 6
+      # delay: 10
 
 
     - name: Print out Change Request number
       ansible.builtin.debug:
         msg: "The current state of the change request is {{ change_request_status.records[0].state }}."
 
-    - name: Close the ServiceNow Change Request
-      servicenow.itsm.change_request:
-        instance:
-          host: "https://{{ SNOW_INSTANCE }}.service-now.com"
-          username: "{{ SNOW_USERNAME }}"
-          password: "{{ SNOW_PASSWORD }}"
-        close_code: "successful"
-        close_notes: "Closed"
-        sys_id: "{{ new_change_request.record.sys_id }}"
+    # - name: Close the ServiceNow Change Request
+    #   servicenow.itsm.change_request:
+    #     instance:
+    #       host: "https://{{ SNOW_INSTANCE }}.service-now.com"
+    #       username: "{{ SNOW_USERNAME }}"
+    #       password: "{{ SNOW_PASSWORD }}"
+    #     close_code: "successful"
+    #     close_notes: "Closed"
+    #     sys_id: "{{ new_change_request.record.sys_id }}"
 
 
 
