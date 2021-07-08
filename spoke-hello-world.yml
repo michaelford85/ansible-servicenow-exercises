@@ -15,10 +15,11 @@
           host: "https://{{ SN_INSTANCE }}.service-now.com"
           username: "{{ SN_USERNAME }}"
           password: "{{ SN_PASSWORD }}"
-        type: standard
+        type: normal
+        priority: high
+        risk: moderate
         other:
-          # approval: "requested"
-          cab_required: true
+          approval: requested
         state: assess
         assignment_group: "CAB Approval"
         short_description: Hello World Change Request
