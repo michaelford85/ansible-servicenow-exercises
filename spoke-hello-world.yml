@@ -60,6 +60,24 @@
       ansible.builtin.debug:
         msg: "The current state of the change request is {{ change_request_status.records[0].state }}."
 
+    - name: Do the actual Ansible Task
+      ansible.builtin.debug:
+        msg:
+          - "HELLO WORLD!"
+          
+    - name: Move the Change request state to Review
+      servicenow.itsm.change_request:
+        instance:
+          host: "https://{{ SN_INSTANCE }}.service-now.com"
+          username: "{{ SN_USERNAME }}"
+          password: "{{ SN_PASSWORD }}"
+        state: "{{ item }}"
+        state: closed
+        sys_id: "{{ new_change_request.record.sys_id }}"
+      loop:
+        - "implement"
+        - "review"
+
     - name: Close the ServiceNow Change Request
       servicenow.itsm.change_request:
         instance:
