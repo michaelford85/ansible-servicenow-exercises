@@ -46,7 +46,7 @@
           password: "{{ SN_PASSWORD }}"
         sys_id: "{{ new_change_request.record.sys_id }}"
       register: change_request_status
-      until: change_request_status.record[0].state == "scheduled"
+      until: change_request_status.records[0].state == "scheduled"
       retries: 6
       delay: 10
 
