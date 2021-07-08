@@ -6,6 +6,7 @@
   vars_files:
     - ./vars/default_vars.yml
     - ./credentials/servicenow-credentials.yml
+    ./credentials/gmail_creds.yml
 
   tasks:
     - name: Create ServiceNow Change Request
