@@ -68,6 +68,7 @@
           password: "{{ SN_PASSWORD }}"
         close_code: "successful"
         close_notes: "Closed"
+        state: closed
         sys_id: "{{ new_change_request.record.sys_id }}"
 
 
