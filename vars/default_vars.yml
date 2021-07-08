@@ -1,7 +1,12 @@
 ---
 # vars file for ansible-servicenow-cmdb
 
-snow_table: cmdb_ci_netgear
 SN_USERNAME: "{{ vaulted_servicenow_username }}"
 SN_PASSWORD: "{{ vaulted_servicenow_password }}"
 SN_INSTANCE: dev71868
+
+gmail_username: "{{ vaulted_gmail_username }}"
+gmail_password: "{{ vaulted_gmail_password }}"
+
+primary_approver: "{{ vaulted_primary_approver }}"
+secondary_approver: "{{ vaulted_secondary_approver }}"

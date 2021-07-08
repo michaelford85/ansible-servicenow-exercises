@@ -20,71 +20,56 @@
         description: Hello World Change Request
       register: new_change_request
 
-    - name: Show Change Request details
-      ansible.builtin.debug:
-        var: new_change_request
+    - name: Store Change Request number as artifact for later in the workflow
+      template:
+        src: ./templates/snow-change-request.j2
+        dest: "{{ working_dir }}/snow-change-request.yml"
+      run_once: yes
+      delegate_to: localhost
 
-    # - name: Store Change Request number as artifact for later in the workflow
-    #   template:
-    #     src: ./templates/snow-change-request.j2
-    #     dest: "{{ working_dir }}/snow-change-request.yml"
-    #   run_once: yes
-    #   delegate_to: localhost
-    #   when: from_snow|bool
-    #
-    # - name: Print out Change Request number
-    #   debug:
-    #     msg: "The newly created Change Request is {{ new_change_request.record.number }}. Awaiting Approval."
-    #   when: from_snow|bool
-    #
-    # #https://www.infinitypp.com/ansible/email-notifications-with-examples/
-    # - name: Sending an email requesting approval
-    #   mail:
-    #     host: smtp.gmail.com
-    #     port: 587
-    #     username: "{{ gmail_username }}"
-    #     password: "{{ gmail_password }}"
-    #     to:
-    #     - "Michael Ford <{{ approver_email }}>"
-    #     - "{{secondary_approver}}"
-    #     #- "{{tertiary_approver}}"
-    #     subject: "Approval request for ServiceNow Change Request {{ new_change_request.record.number }}"
-    #     body: "You have a new CR Approval request. Please click on this URL to approve: https://{{ SNOW_INSTANCE }}.service-now.com/nav_to.do?uri=change_request.do?sysparm_query=number={{ new_change_request.record.number }}"
-    #   delegate_to: localhost
-    #   when: from_snow|bool
-    #
-    # - name: Wait for Change Request approval
-    #   snow_record_find:
-    #     username: "{{ SNOW_USERNAME }}"
-    #     password: "{{ SNOW_PASSWORD }}"
-    #     instance: "{{ SNOW_INSTANCE }}"
-    #     table: change_request
-    #     query:
-    #       AND:
-    #         equals:
-    #           number: "{{ new_change_request.record.number }}"
-    #   register: change_request_status
-    #   when: from_snow|bool
-    #   until: change_request_status.record[0].state == "-2"
-    #   retries: 50
-    #   delay: 10
-    #
-    # - debug:
-    #     msg: "Change Request {{ new_change_request.record.number }} has been approved!"
-    #   when: from_snow|bool
-    #
-    # - name: Close the ServiceNow Change Request
-    #   servicenow.itsm.change_request:
-    #     instance:
-    #       host: "https://{{ SNOW_INSTANCE }}.service-now.com"
-    #       username: "{{ SNOW_USERNAME }}"
-    #       password: "{{ SNOW_PASSWORD }}"
-    #     type: standard
-    #     close_code: "successful"
-    #     close_notes: "Closed"
-    #
-    #   register: new_change_request
-    #   when: from_snow|bool
+    - name: Print out Change Request number
+      ansible.builtin.debug:
+        msg: "The newly created change request is {{ new_change_request.record.number }}. Awaiting approval from Change Advisory Board."
+
+    #https://www.infinitypp.com/ansible/email-notifications-with-examples/
+    - name: Sending an email requesting approval
+      mail:
+        host: smtp.gmail.com
+        port: 587
+        username: "{{ gmail_username }}"
+        password: "{{ gmail_password }}"
+        to:
+        - "{{ primary_approver }}"
+        - "{{ secondary_approver }}"
+        subject: "Approval request for ServiceNow Change Request {{ new_change_request.record.number }}"
+        body: "You have a new CR Approval request. Please click on this URL to approve: https://{{ SN_INSTANCE }}.service-now.com/nav_to.do?uri=change_request.do?sysparm_query=number={{ new_change_request.record.number }}"
+
+    - name: Wait for Change Request approval
+      servicenow.itsm.change_request_info:
+        instance:
+          host: "https://{{ SN_INSTANCE }}.service-now.com"
+          username: "{{ SN_USERNAME }}"
+          password: "{{ SN_PASSWORD }}"
+        sys_id: "{{ new_change_request.record.sys_id }}"
+      register: change_request_status
+      until: change_request_status.record[0].state == "scheduled"
+      retries: 6
+      delay: 10
+
+
+    - name: Print out Change Request number
+      ansible.builtin.debug:
+        msg: "The current state of the change request is {{ change_request_status.record[0].state }}."
+
+    - name: Close the ServiceNow Change Request
+      servicenow.itsm.change_request:
+        instance:
+          host: "https://{{ SNOW_INSTANCE }}.service-now.com"
+          username: "{{ SNOW_USERNAME }}"
+          password: "{{ SNOW_PASSWORD }}"
+        close_code: "successful"
+        close_notes: "Closed"
+        sys_id: "{{ new_change_request.record.sys_id }}"
 
 
 
