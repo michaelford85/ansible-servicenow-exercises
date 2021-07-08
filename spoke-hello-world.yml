@@ -21,7 +21,7 @@
       register: new_change_request
 
     - name: Show Change Request details
-      debug:
+      ansible.builtin.debug:
         var: new_change_request
 
     # - name: Store Change Request number as artifact for later in the workflow
