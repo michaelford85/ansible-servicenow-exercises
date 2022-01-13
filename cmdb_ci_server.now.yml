@@ -1,0 +1,5 @@
+plugin: servicenow.itsm.now
+instance:
+  host: https://dev71868.service-now.com/
+  username: "{{ SN_USERNAME }}"
+  password: "{{ SN_PASSWORD }}"
