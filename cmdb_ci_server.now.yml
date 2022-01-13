@@ -1,4 +1,3 @@
----
 plugin: servicenow.itsm.now
 instance:
   host: https://dev71868.service-now.com/
