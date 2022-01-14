@@ -1,5 +1,5 @@
 plugin: servicenow.itsm.now
 instance:
-  host: "dev71868.service-now.com"
+  host: "https://dev71868.service-now.com"
   username: "{{ the_username }}"
   password: "{{ the_password }}"
