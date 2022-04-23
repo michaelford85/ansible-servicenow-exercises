@@ -30,9 +30,13 @@
       ansible.builtin.debug:
         msg: "The newly created change request is {{ new_change_request.record.number }}. Awaiting approval from Change Advisory Board."
 
+    - name: Print out Change Request details
+      ansible.builtin.debug:
+        var: new_change_request
+
     #https://www.infinitypp.com/ansible/email-notifications-with-examples/
     - name: Sending an email requesting approval
-      mail:
+      community.general.mail:
         host: smtp.gmail.com
         port: 587
         username: "{{ gmail_username }}"
@@ -56,7 +60,7 @@
       delay: 10
 
 
-    - name: Print out Change Request number
+    - name: Print out Change Request state
       ansible.builtin.debug:
         msg: "The current state of the change request is {{ change_request_status.records[0].state }}."
 
