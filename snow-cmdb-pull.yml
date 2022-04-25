@@ -15,8 +15,9 @@
           host: "https://{{ SN_INSTANCE }}.service-now.com"
           username: "{{ SN_USERNAME }}"
           password: "{{ SN_PASSWORD }}"
+        sys_class_name: "{{ cmdb_table }}"
       register: result
 
-    - name: Print out Change Request number
+    - name: Print out CMDB Records
       ansible.builtin.debug:
         var: result
