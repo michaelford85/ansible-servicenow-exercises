@@ -1,0 +1,22 @@
+---
+- name: Pull CMDB record from CMDB
+  hosts: localhost
+  connection: local
+  gather_facts: no
+  vars_files:
+    - ./vars/default_vars.yml
+    - ./credentials/servicenow-credentials.yml
+    - ./credentials/gmail_creds.yml
+
+  tasks:
+    - name: Pull CMDB records
+      servicenow.itsm.configuration_item_info:
+        instance:
+          host: "https://{{ SN_INSTANCE }}.service-now.com"
+          username: "{{ SN_USERNAME }}"
+          password: "{{ SN_PASSWORD }}"
+        register: result
+
+    - name: Print out Change Request number
+      ansible.builtin.debug:
+        var: result

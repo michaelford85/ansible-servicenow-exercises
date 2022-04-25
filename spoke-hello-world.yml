@@ -34,75 +34,75 @@
       ansible.builtin.debug:
         var: new_change_request
 
-    # #https://www.infinitypp.com/ansible/email-notifications-with-examples/
-    # - name: Sending an email requesting approval
-    #   community.general.mail:
-    #     host: smtp.gmail.com
-    #     port: 587
-    #     username: "{{ gmail_username }}"
-    #     password: "{{ gmail_password }}"
-    #     to:
-    #     - "{{ primary_approver }}"
-    #     - "{{ secondary_approver }}"
-    #     subject: "Approval request for ServiceNow Change Request {{ new_change_request.record.number }}"
-    #     body: "You have a new CR Approval request. Please click on this URL to approve: https://{{ SN_INSTANCE }}.service-now.com/nav_to.do?uri=change_request.do?sysparm_query=number={{ new_change_request.record.number }}"
+    #https://www.infinitypp.com/ansible/email-notifications-with-examples/
+    - name: Sending an email requesting approval
+      community.general.mail:
+        host: smtp.gmail.com
+        port: 587
+        username: "{{ gmail_username }}"
+        password: "{{ gmail_password }}"
+        to:
+        - "{{ primary_approver }}"
+        - "{{ secondary_approver }}"
+        subject: "Approval request for ServiceNow Change Request {{ new_change_request.record.number }}"
+        body: "You have a new CR Approval request. Please click on this URL to approve: https://{{ SN_INSTANCE }}.service-now.com/nav_to.do?uri=change_request.do?sysparm_query=number={{ new_change_request.record.number }}"
 
-    # - name: Wait for Change Request approval
-    #   servicenow.itsm.change_request_info:
-    #     instance:
-    #       host: "https://{{ SN_INSTANCE }}.service-now.com"
-    #       username: "{{ SN_USERNAME }}"
-    #       password: "{{ SN_PASSWORD }}"
-    #     sys_id: "{{ new_change_request.record.sys_id }}"
-    #   register: change_request_status
-    #   until: change_request_status.records[0].state == "scheduled"
-    #   retries: 50
-    #   delay: 10
+    - name: Wait for Change Request approval
+      servicenow.itsm.change_request_info:
+        instance:
+          host: "https://{{ SN_INSTANCE }}.service-now.com"
+          username: "{{ SN_USERNAME }}"
+          password: "{{ SN_PASSWORD }}"
+        sys_id: "{{ new_change_request.record.sys_id }}"
+      register: change_request_status
+      until: change_request_status.records[0].state == "scheduled"
+      retries: 50
+      delay: 10
 
 
-    # - name: Print out Change Request state
-    #   ansible.builtin.debug:
-    #     msg: "The current state of the change request is {{ change_request_status.records[0].state }}."
+    - name: Print out Change Request state
+      ansible.builtin.debug:
+        msg: "The current state of the change request is {{ change_request_status.records[0].state }}."
 
-    # - name: Do the actual Ansible Task
-    #   ansible.builtin.debug:
-    #     msg:
-    #       - "{{ hello_world_msg }}"
+    - name: Do the actual Ansible Task
+      ansible.builtin.debug:
+        msg:
+          - "{{ hello_world_msg }}"
 
-    # - name: Move the Change request state to Review
-    #   servicenow.itsm.change_request:
-    #     instance:
-    #       host: "https://{{ SN_INSTANCE }}.service-now.com"
-    #       username: "{{ SN_USERNAME }}"
-    #       password: "{{ SN_PASSWORD }}"
-    #     state: "{{ item }}"
-    #     sys_id: "{{ new_change_request.record.sys_id }}"
-    #   loop:
-    #     - "implement"
-    #     - "review"
+    - name: Move the Change request state to Review
+      servicenow.itsm.change_request:
+        instance:
+          host: "https://{{ SN_INSTANCE }}.service-now.com"
+          username: "{{ SN_USERNAME }}"
+          password: "{{ SN_PASSWORD }}"
+        state: "{{ item }}"
+        sys_id: "{{ new_change_request.record.sys_id }}"
+      loop:
+        - "implement"
+        - "review"
 
-    # - name: Close the ServiceNow Change Request
-    #   servicenow.itsm.change_request:
-    #     instance:
-    #       host: "https://{{ SN_INSTANCE }}.service-now.com"
-    #       username: "{{ SN_USERNAME }}"
-    #       password: "{{ SN_PASSWORD }}"
-    #     close_code: "successful"
-    #     close_notes: "Closed"
-    #     state: closed
-    #     sys_id: "{{ new_change_request.record.sys_id }}"
+    - name: Close the ServiceNow Change Request
+      servicenow.itsm.change_request:
+        instance:
+          host: "https://{{ SN_INSTANCE }}.service-now.com"
+          username: "{{ SN_USERNAME }}"
+          password: "{{ SN_PASSWORD }}"
+        close_code: "successful"
+        close_notes: "Closed"
+        state: closed
+        sys_id: "{{ new_change_request.record.sys_id }}"
 
-    # - name: Sending a success email
-    #   mail:
-    #     host: smtp.gmail.com
-    #     port: 587
-    #     username: "{{ gmail_username }}"
-    #     password: "{{ gmail_password }}"
-    #     to:
-    #     - "{{ primary_approver }}"
-    #     - "{{ secondary_approver }}"
-    #     subject: "Change Request {{ new_change_request.record.number }} Successful"
-    #     body: "Your ServiceNow Change Request {{ new_change_request.record.number }} has been completed successfully!"
+    - name: Sending a success email
+      mail:
+        host: smtp.gmail.com
+        port: 587
+        username: "{{ gmail_username }}"
+        password: "{{ gmail_password }}"
+        to:
+        - "{{ primary_approver }}"
+        - "{{ secondary_approver }}"
+        subject: "Change Request {{ new_change_request.record.number }} Successful"
+        body: "Your ServiceNow Change Request {{ new_change_request.record.number }} has been completed successfully!"
 
 
 
