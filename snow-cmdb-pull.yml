@@ -15,7 +15,7 @@
           host: "https://{{ SN_INSTANCE }}.service-now.com"
           username: "{{ SN_USERNAME }}"
           password: "{{ SN_PASSWORD }}"
-        register: result
+      register: result
 
     - name: Print out Change Request number
       ansible.builtin.debug:
